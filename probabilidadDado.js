@@ -5,44 +5,41 @@ const readline = require('readline').createInterface({
   output: process.stdout,
 });
 
-let one = [],
-  two = [],
-  three = [],
-  four = [],
-  five = [],
-  six = [];
-let faces = [one, two, three, four, five, six];
-
 readline.question('Cuantas veces lanzarás el dado? ', (attempts) => {
-  diceProbability(attempts, faces);
+  diceProbability(attempts);
   readline.close();
 });
 
-function diceProbability(attempts, faces) {
-  // imperativa
-  for (let i = 0; i < attempts; i++) {
-    let random = (Math.random() * 100 + 1).toFixed(3);
-    if (random <= 16.666667) {
-      faces[0].push(i);
-    } else if (random > 16.666667 && random <= 33.333334) {
-      faces[1].push(i);
-    } else if (random > 33.333334 && random <= 50.000001) {
-      faces[2].push(i);
-    } else if (random > 50.000001 && random <= 66.666668) {
-      faces[3].push(i);
-    } else if (random > 66.666668 && random <= 83.333335) {
-      faces[4].push(i);
-    } else {
-      faces[5].push(i);
-    }
-  }
+//diceProbability(100);
+function diceProbability(attempts) {
+  let rollPerFace = {
+    1: [],
+    2: [],
+    3: [],
+    4: [],
+    5: [],
+    6: [],
+  };
 
-  // declarativa
-  faces.map((face, index) => {
+  let faces = Object.keys(rollPerFace);
+
+  rollingDice(attempts, rollPerFace, faces);
+  showResults(attempts, rollPerFace);
+}
+
+function rollingDice(attempts, rollPerFace, faces) {
+  for (let i = 0; i < attempts; i++) {
+    let random = faces[Math.floor(Math.random() * faces.length)];
+    rollPerFace[random].push(i);
+  }
+}
+
+function showResults(attempts, rollPerFace) {
+  for (const face in rollPerFace) {
     console.log(
-      `Cayó en cara ${index + 1}: ${face.length} veces, osea ${
-        (face.length / attempts) * 100
+      `Cayó en cara ${face}: ${rollPerFace[face].length} veces, osea ${
+        (rollPerFace[face].length / attempts) * 100
       }%`
     );
-  });
+  }
 }
