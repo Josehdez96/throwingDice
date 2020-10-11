@@ -42,4 +42,9 @@ function showResults(attempts, rollPerFace) {
       }%`
     );
   }
+
+  // Show the data
+  // for (const face in rollPerFace) {
+  //   console.log(`Intentos que cayerón en ${face}: ${rollPerFace[face]}`);
+  // }
 }
